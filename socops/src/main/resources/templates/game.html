@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" data-theme="mario" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <!-- Anti-FOUC: apply saved theme before first render -->
+    <script>(function(){var t;try{t=localStorage.getItem("socops-theme")}catch(e){}if(t){document.documentElement.setAttribute("data-theme",t)}})()</script>
     <title>Soc Ops — Social Bingo</title>
+    <!-- Pixel / retro fonts for themes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/app.css}"/>
     <link rel="icon" type="image/png" th:href="@{/favicon.png}"/>
     <style>
         /* active-state tweaks that need pseudo-class selectors */
-        .tile-active:active { background-color: #f3f4f6 !important; }
-        .accent-active:active { background-color: #3b82f6 !important; }
+        .tile-active:active { background-color: #f3f4f6; }
+        .accent-active:active { background-color: #3b82f6; }
     </style>
 </head>
 <body class="h-full">
@@ -89,6 +95,18 @@
             Keep Playing
         </button>
     </div>
+</div>
+
+<!-- ============================================================= -->
+<!--  Theme Switcher — fixed position, visible in all views         -->
+<!-- ============================================================= -->
+<div style="position:fixed;bottom:1rem;right:1rem;z-index:200">
+    <button id="themeSwitcherBtn" class="theme-switcher"
+            aria-label="Switch theme"
+            onclick="cycleTheme()">
+        <span id="themeNextIcon" aria-hidden="true"></span>
+        <span id="themeNextLabel"></span>
+    </button>
 </div>
 
 <!-- ============================================================= -->
@@ -324,6 +342,39 @@
         showPhase("LOBBY");
     }
 })();
+</script>
+<!-- ============================================================= -->
+<!--  Theme management                                              -->
+<!-- ============================================================= -->
+<script>
+(function () {
+    "use strict";
+
+    var THEME_KEY = "socops-theme";
+    var THEMES    = ["mario", "arcade"];
+    var THEME_NEXT_ICON  = { mario: "\uD83D\uDD79",  arcade: "\uD83C\uDF44" };
+    var THEME_NEXT_LABEL = { mario: "ARCADE",         arcade: "MARIO" };
+
+    function applyTheme(name) {
+        document.documentElement.setAttribute("data-theme", name);
+        try { localStorage.setItem(THEME_KEY, name); } catch (_) {}
+        var iconEl  = document.getElementById("themeNextIcon");
+        var labelEl = document.getElementById("themeNextLabel");
+        if (iconEl)  { iconEl.textContent  = THEME_NEXT_ICON[name];  }
+        if (labelEl) { labelEl.textContent = THEME_NEXT_LABEL[name]; }
+    }
+
+    window.cycleTheme = function () {
+        var current = document.documentElement.getAttribute("data-theme") || "mario";
+        var idx     = THEMES.indexOf(current);
+        applyTheme(THEMES[(idx + 1) % THEMES.length]);
+    };
+
+    /* Initialise: respect localStorage, default to mario */
+    var saved;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (_) {}
+    applyTheme((saved && THEMES.indexOf(saved) !== -1) ? saved : "mario");
+}());
 </script>
 
 </body>
