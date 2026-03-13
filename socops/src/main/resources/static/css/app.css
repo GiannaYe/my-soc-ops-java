@@ -178,3 +178,286 @@ button:disabled { cursor: default; }
 .animate-\[bounce_0\.5s_ease-out\] {
     animation: bounce 0.5s ease-out;
 }
+
+/* ================================================================
+   THEME SYSTEM — CSS custom-property tokens + per-theme overrides
+   Theme toggled via data-theme on <html>; preference saved in
+   localStorage under "socops-theme".
+   ================================================================ */
+
+/* ── Mario theme tokens (default bold/pixel-retro) ─────────────── */
+[data-theme="mario"] {
+    --t-font:       'Press Start 2P', 'Courier New', monospace;
+    --t-bg-page:    #5c94fc;
+    --t-bg-surface: #fad147;
+    --t-bg-header:  #c84b0c;
+    --t-bg-accent:  #e52521;
+    --t-bg-marked:  #43b047;
+    --t-bg-win:     #fbd000;
+    --t-bg-banner:  #fbd000;
+    --t-bg-overlay: rgba(0,0,0,0.7);
+    --t-text-primary:   #1a0a00;
+    --t-text-secondary: #3b1d00;
+    --t-text-hint:      #5a3000;
+    --t-text-accent:    #ffffff;
+    --t-text-marked:    #143d14;
+    --t-text-win:       #4d2500;
+    --t-text-bingo:     #e52521;
+    --t-text-banner:    #1a0a00;
+    --t-border:         #1a0a00;
+    --t-border-tile:    #1a0a00;
+    --t-border-marked:  #1a5c1a;
+    --t-border-win:     #b87800;
+    --t-radius-sm:   0px;
+    --t-radius-md:   0px;
+    --t-radius-lg:   0px;
+    --t-border-w:    3px;
+    --t-shadow-card:  4px 4px 0 #1a0a00;
+    --t-shadow-modal: 6px 6px 0 #1a0a00;
+    --t-shadow-btn:   4px 4px 0 #1a0a00;
+}
+
+/* ── Arcade theme tokens (CRT/arcade-console inspired) ──────────── */
+[data-theme="arcade"] {
+    --t-font:       'VT323', 'Courier New', monospace;
+    --t-bg-page:    #0d0d0d;
+    --t-bg-surface: #0f1923;
+    --t-bg-header:  #080e16;
+    --t-bg-accent:  #00b894;
+    --t-bg-marked:  #00381f;
+    --t-bg-win:     #1a1800;
+    --t-bg-banner:  #00150d;
+    --t-bg-overlay: rgba(0,0,0,0.85);
+    --t-text-primary:   #00ff87;
+    --t-text-secondary: #00cc6a;
+    --t-text-hint:      #007f40;
+    --t-text-accent:    #0d0d0d;
+    --t-text-marked:    #00ff87;
+    --t-text-win:       #ffff00;
+    --t-text-bingo:     #ffff00;
+    --t-text-banner:    #00ff87;
+    --t-border:         #00ff87;
+    --t-border-tile:    #003d20;
+    --t-border-marked:  #00ff87;
+    --t-border-win:     #ffff00;
+    --t-radius-sm:   0px;
+    --t-radius-md:   0px;
+    --t-radius-lg:   2px;
+    --t-border-w:    1px;
+    --t-shadow-card:  0 0 8px rgba(0,255,135,0.2);
+    --t-shadow-modal: 0 0 30px rgba(0,255,135,0.4);
+    --t-shadow-btn:   0 0 8px rgba(0,255,135,0.5);
+}
+
+/* ── Body font ───────────────────────────────────────────────────── */
+[data-theme="mario"] body,
+[data-theme="arcade"] body {
+    font-family: var(--t-font);
+}
+
+/* ── Background overrides ────────────────────────────────────────── */
+[data-theme="mario"] .bg-gray-50  { background-color: var(--t-bg-page); }
+[data-theme="arcade"] .bg-gray-50 { background-color: var(--t-bg-page); }
+
+[data-theme="mario"] .bg-white    { background-color: var(--t-bg-surface); }
+[data-theme="arcade"] .bg-white   { background-color: var(--t-bg-surface); }
+
+[data-theme="mario"] header.bg-white  { background-color: var(--t-bg-header); }
+[data-theme="arcade"] header.bg-white { background-color: var(--t-bg-header); }
+
+[data-theme="mario"] .bg-accent   { background-color: var(--t-bg-accent); }
+[data-theme="arcade"] .bg-accent  { background-color: var(--t-bg-accent); }
+
+[data-theme="mario"] .bg-marked   { background-color: var(--t-bg-marked); }
+[data-theme="arcade"] .bg-marked  { background-color: var(--t-bg-marked); }
+
+[data-theme="mario"] .bg-amber-200  { background-color: var(--t-bg-win); }
+[data-theme="arcade"] .bg-amber-200 { background-color: var(--t-bg-win); }
+
+[data-theme="mario"] .bg-amber-100  { background-color: var(--t-bg-banner); }
+[data-theme="arcade"] .bg-amber-100 { background-color: var(--t-bg-banner); }
+
+[data-theme="mario"] .bg-black\/50  { background-color: var(--t-bg-overlay); }
+[data-theme="arcade"] .bg-black\/50 { background-color: var(--t-bg-overlay); }
+
+/* ── Text colour overrides ───────────────────────────────────────── */
+[data-theme="mario"] .text-gray-900,
+[data-theme="arcade"] .text-gray-900  { color: var(--t-text-primary); }
+
+[data-theme="mario"] .text-gray-800,
+[data-theme="arcade"] .text-gray-800  { color: var(--t-text-secondary); }
+
+[data-theme="mario"] .text-gray-700,
+[data-theme="arcade"] .text-gray-700  { color: var(--t-text-primary); }
+
+[data-theme="mario"] .text-gray-600,
+[data-theme="arcade"] .text-gray-600  { color: var(--t-text-secondary); }
+
+[data-theme="mario"] .text-gray-500,
+[data-theme="arcade"] .text-gray-500  { color: var(--t-text-hint); }
+
+[data-theme="mario"] .text-white,
+[data-theme="arcade"] .text-white     { color: var(--t-text-accent); }
+
+[data-theme="mario"] .text-green-800,
+[data-theme="arcade"] .text-green-800 { color: var(--t-text-marked); }
+
+[data-theme="mario"] .text-green-600,
+[data-theme="arcade"] .text-green-600 { color: var(--t-text-marked); }
+
+[data-theme="mario"] .text-amber-500,
+[data-theme="arcade"] .text-amber-500 { color: var(--t-text-bingo); }
+
+[data-theme="mario"] .text-amber-800,
+[data-theme="arcade"] .text-amber-800 { color: var(--t-text-banner); }
+
+[data-theme="mario"] .text-amber-900,
+[data-theme="arcade"] .text-amber-900 { color: var(--t-text-win); }
+
+/* ── Border colour overrides ─────────────────────────────────────── */
+[data-theme="mario"] .border-gray-200,
+[data-theme="arcade"] .border-gray-200    { border-color: var(--t-border); }
+
+[data-theme="mario"] .border-gray-300,
+[data-theme="arcade"] .border-gray-300    { border-color: var(--t-border-tile); }
+
+[data-theme="mario"] .border-marked-border,
+[data-theme="arcade"] .border-marked-border { border-color: var(--t-border-marked); }
+
+[data-theme="mario"] .border-amber-400,
+[data-theme="arcade"] .border-amber-400   { border-color: var(--t-border-win); }
+
+/* ── Mario thick pixel border ────────────────────────────────────── */
+[data-theme="mario"] .border   { border-width: var(--t-border-w); }
+[data-theme="mario"] .border-b { border-bottom-width: var(--t-border-w); }
+
+/* ── Radius overrides ────────────────────────────────────────────── */
+[data-theme="mario"] .rounded,
+[data-theme="arcade"] .rounded    { border-radius: var(--t-radius-sm); }
+
+[data-theme="mario"] .rounded-lg,
+[data-theme="arcade"] .rounded-lg { border-radius: var(--t-radius-md); }
+
+[data-theme="mario"] .rounded-xl,
+[data-theme="arcade"] .rounded-xl { border-radius: var(--t-radius-lg); }
+
+/* ── Shadow overrides ────────────────────────────────────────────── */
+[data-theme="mario"] .shadow-sm,
+[data-theme="arcade"] .shadow-sm { box-shadow: var(--t-shadow-card); }
+
+[data-theme="mario"] .shadow-xl,
+[data-theme="arcade"] .shadow-xl { box-shadow: var(--t-shadow-modal); }
+
+/* ── Mario pixel-art atmosphere ──────────────────────────────────── */
+[data-theme="mario"] body { background-color: var(--t-bg-page); }
+
+[data-theme="mario"] #lobbyView {
+    /* 40px pitch mimics classic 8-bit tile grid */
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 38px,
+        rgba(0,0,0,0.05) 38px,
+        rgba(0,0,0,0.05) 40px
+    );
+}
+
+[data-theme="mario"] button:not(:disabled) { box-shadow: var(--t-shadow-btn); }
+
+[data-theme="mario"] button:not(:disabled):active {
+    box-shadow: 1px 1px 0 #1a0a00;
+    transform: translate(2px, 2px);
+}
+
+[data-theme="mario"] button.tile-active:active   { background-color: #e8c040; }
+[data-theme="mario"] button.accent-active:active { background-color: #c0302d; }
+
+/* Scale down Press Start 2P — it's a chunky pixel font */
+[data-theme="mario"] .text-xs  { font-size: 0.5rem;  line-height: 1rem; }
+[data-theme="mario"] .text-sm  { font-size: 0.6rem;  line-height: 1.15rem; }
+[data-theme="mario"] .text-lg  { font-size: 0.85rem; line-height: 1.5rem; }
+[data-theme="mario"] .text-3xl { font-size: 1.4rem;  line-height: 1.8rem; }
+[data-theme="mario"] .text-4xl { font-size: 1.7rem;  line-height: 2rem; }
+[data-theme="mario"] .text-5xl { font-size: 2rem;    line-height: 1.2; }
+
+/* ── Arcade CRT atmosphere ───────────────────────────────────────── */
+[data-theme="arcade"] body { background-color: var(--t-bg-page); }
+
+/* Scanline overlay */
+[data-theme="arcade"] #lobbyView::after,
+[data-theme="arcade"] #activeView::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.1) 2px,
+        rgba(0,0,0,0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+[data-theme="arcade"] button:not(:disabled) { box-shadow: 0 0 4px rgba(0,255,135,0.2); }
+
+[data-theme="arcade"] button:not(:disabled):active {
+    box-shadow: 0 0 12px rgba(0,255,135,0.7);
+}
+
+[data-theme="arcade"] button.tile-active:active   { background-color: #1a2840; }
+[data-theme="arcade"] button.accent-active:active { background-color: #009977; }
+
+/* Scale up VT323 — it's designed for display at larger sizes */
+[data-theme="arcade"] .text-xs  { font-size: 1rem;   line-height: 1.1rem; }
+[data-theme="arcade"] .text-sm  { font-size: 1.1rem; line-height: 1.3rem; }
+[data-theme="arcade"] .text-lg  { font-size: 1.6rem; line-height: 1.8rem; }
+[data-theme="arcade"] .text-3xl { font-size: 2.5rem; line-height: 2.75rem; }
+[data-theme="arcade"] .text-4xl { font-size: 3rem;   line-height: 3.2rem; }
+[data-theme="arcade"] .text-5xl { font-size: 4rem;   line-height: 1; }
+
+/* ── Theme Switcher button ───────────────────────────────────────── */
+.theme-switcher {
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border: 2px solid;
+    background: transparent;
+    font-family: inherit;
+    font-size: 0.75rem;
+    line-height: 1;
+    transition: box-shadow 0.15s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+[data-theme="mario"] .theme-switcher {
+    border-color: #1a0a00;
+    background-color: #fbd000;
+    color: #1a0a00;
+    box-shadow: 3px 3px 0 #1a0a00;
+    font-family: var(--t-font);
+    font-size: 0.45rem;
+    letter-spacing: 0.05em;
+}
+
+[data-theme="mario"] .theme-switcher:active {
+    box-shadow: 1px 1px 0 #1a0a00;
+    transform: translate(2px, 2px);
+}
+
+[data-theme="arcade"] .theme-switcher {
+    border-color: #00ff87;
+    background-color: transparent;
+    color: #00ff87;
+    box-shadow: 0 0 6px rgba(0,255,135,0.35);
+    font-family: var(--t-font);
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+}
+
+[data-theme="arcade"] .theme-switcher:active {
+    box-shadow: 0 0 12px rgba(0,255,135,0.7);
+}
