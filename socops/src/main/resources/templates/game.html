@@ -4,36 +4,51 @@
 <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Soc Ops — Social Bingo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/app.css}"/>
     <link rel="icon" type="image/png" th:href="@{/favicon.png}"/>
-    <style>
-        /* active-state tweaks that need pseudo-class selectors */
-        .tile-active:active { background-color: #f3f4f6 !important; }
-        .accent-active:active { background-color: #3b82f6 !important; }
-    </style>
 </head>
-<body class="h-full">
+<body>
+
+<!-- ============================================================= -->
+<!--  Decorative background scene (fixed, aria-hidden)             -->
+<!-- ============================================================= -->
+<div class="mario-scene" aria-hidden="true">
+    <div class="mario-cloud mario-cloud--a"></div>
+    <div class="mario-cloud mario-cloud--b"></div>
+    <div class="mario-cloud mario-cloud--c"></div>
+    <div class="mario-ground">
+        <div class="mario-block"></div>
+        <div class="mario-block mario-block--q"></div>
+        <div class="mario-block"></div>
+        <div class="mario-block mario-block--q"></div>
+        <div class="mario-block"></div>
+        <div class="mario-block"></div>
+        <div class="mario-block mario-block--q"></div>
+    </div>
+</div>
 
 <!-- ============================================================= -->
 <!--  LOBBY — visible before a game starts                          -->
 <!-- ============================================================= -->
-<div id="lobbyView" class="flex flex-col items-center justify-center min-h-full p-6 bg-gray-50">
-    <div class="text-center max-w-sm">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2">Soc Ops</h1>
-        <p class="text-lg text-gray-600 mb-8">Social Bingo</p>
+<div id="lobbyView" class="mario-screen mario-screen--lobby">
+    <div class="lobby-card">
+        <h1 class="lobby-title enter-up">SOC<br/>OPS</h1>
+        <p class="lobby-sub enter-up" style="animation-delay:.12s">Social Bingo</p>
 
-        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-200 mb-8">
-            <h2 class="font-semibold text-gray-800 mb-3">How to play</h2>
-            <ul class="text-left text-gray-600 text-sm space-y-2">
-                <li>• Find people who match the questions</li>
-                <li>• Tap a square when you find a match</li>
-                <li>• Get 5 in a row to win!</li>
+        <div class="info-panel enter-up" style="animation-delay:.24s">
+            <div class="info-panel__cap">HOW TO PLAY</div>
+            <ul class="rules-list">
+                <li>&#x25BA; Find people who match</li>
+                <li>&#x25BA; Tap a square to mark it</li>
+                <li>&#x25BA; Get 5 in a row to win!</li>
             </ul>
         </div>
 
-        <button onclick="launchGame()"
-                class="w-full bg-accent text-white font-semibold py-4 px-8 rounded-lg text-lg accent-active transition-colors">
-            Start Game
+        <button onclick="launchGame()" class="pixel-btn pixel-btn--green enter-up" style="animation-delay:.36s">
+            &#x25BA; START GAME
         </button>
     </div>
 </div>
@@ -41,32 +56,25 @@
 <!-- ============================================================= -->
 <!--  ACTIVE GAME — board, header, optional bingo banner            -->
 <!-- ============================================================= -->
-<div id="activeView" class="flex flex-col min-h-full bg-gray-50" style="display:none">
+<div id="activeView" class="mario-screen mario-screen--game" style="display:none">
 
-    <!-- top bar -->
-    <header class="flex items-center justify-between p-3 bg-white border-b border-gray-200">
-        <button onclick="retreatToLobby()"
-                class="text-gray-500 text-sm px-3 py-1\.5 rounded tile-active">
-            &#8592; Back
-        </button>
-        <h1 class="font-bold text-gray-900">Soc Ops</h1>
-        <div class="w-16"></div>
+    <!-- HUD bar -->
+    <header class="game-hud">
+        <button onclick="retreatToLobby()" class="hud-back-btn">&#x25C4; BACK</button>
+        <span class="hud-title">SOC OPS</span>
+        <div style="width:4rem"></div>
     </header>
 
     <!-- hint -->
-    <p class="text-center text-gray-500 text-sm py-2 px-4">
-        Tap a square when you find someone who matches it.
-    </p>
+    <p class="game-hint">Tap a square when you find someone who matches it.</p>
 
     <!-- bingo banner (hidden until victory) -->
-    <div id="bingoBanner"
-         class="bg-amber-100 text-amber-800 text-center py-2 font-semibold text-sm"
-         style="display:none">
-        &#127881; BINGO! You got a line!
+    <div id="bingoBanner" class="bingo-banner" style="display:none">
+        &#x2605; BINGO! You got a line! &#x2605;
     </div>
 
     <!-- the 5×5 grid -->
-    <div class="flex-1 flex items-center justify-center p-3">
+    <div class="grid-stage">
         <div id="gridContainer"
              class="grid grid-cols-5 gap-1 w-full max-w-md mx-auto aspect-square">
             <!-- tiles injected by JS -->
@@ -75,17 +83,22 @@
 </div>
 
 <!-- ============================================================= -->
-<!--  VICTORY MODAL — overlays the board                            -->
+<!--  VICTORY OVERLAY — overlays the board                          -->
 <!-- ============================================================= -->
-<div id="victoryOverlay"
-     class="fixed inset-0 bg-black\/50 flex items-center justify-center p-4 z-50"
-     style="display:none">
-    <div class="bg-white rounded-xl p-6 max-w-xs w-full text-center shadow-xl animate-[bounce_0.5s_ease-out]">
-        <div class="text-5xl mb-4">&#127881;</div>
-        <h2 class="text-3xl font-bold text-amber-500 mb-2">BINGO!</h2>
-        <p class="text-gray-600 mb-6">You completed a line!</p>
-        <button onclick="dismissVictoryModal()"
-                class="w-full bg-accent text-white font-semibold py-3 px-6 rounded-lg accent-active transition-colors">
+<div id="victoryOverlay" class="victory-overlay fixed inset-0 z-50" style="display:none">
+    <div class="victory-card">
+        <div class="victory-confetti" aria-hidden="true">
+            <span class="vcf vcf--1">&#x2605;</span>
+            <span class="vcf vcf--2">&#x25CF;</span>
+            <span class="vcf vcf--3">&#x2605;</span>
+            <span class="vcf vcf--4">&#x25CF;</span>
+            <span class="vcf vcf--5">&#x2605;</span>
+            <span class="vcf vcf--6">&#x25CF;</span>
+        </div>
+        <div class="victory-star">&#x2605;</div>
+        <h2 class="victory-heading">BINGO!</h2>
+        <p class="victory-msg">You completed a line!</p>
+        <button onclick="dismissVictoryModal()" class="pixel-btn pixel-btn--gold">
             Keep Playing
         </button>
     </div>
@@ -133,22 +146,15 @@
             var tile = liveTiles[t];
             var btn = document.createElement("button");
 
-            /* base styling identical to the original Blazor BingoSquare */
-            var base = "relative flex items-center justify-center p-1 text-center " +
-                       "border border-gray-300 rounded transition-all duration-150 " +
-                       "select-none min-h-[60px] text-xs leading-tight";
-
-            var state;
-            if (tile.selected) {
-                state = winIds[tile.id]
-                    ? "bg-amber-200 border-amber-400 text-amber-900"
-                    : "bg-marked border-marked-border text-green-800";
+            if (tile.freeCell) {
+                btn.className = "tile tile--free";
+            } else if (tile.selected && winIds[tile.id]) {
+                btn.className = "tile tile--win";
+            } else if (tile.selected) {
+                btn.className = "tile tile--marked";
             } else {
-                state = "bg-white text-gray-700 tile-active";
+                btn.className = "tile tile--empty";
             }
-
-            var extra = tile.freeCell ? " font-bold text-sm" : "";
-            btn.className = base + " " + state + extra;
 
             if (tile.freeCell) { btn.disabled = true; }
             btn.setAttribute("aria-pressed", String(tile.selected));
@@ -156,14 +162,14 @@
 
             /* inner label */
             var labelSpan = document.createElement("span");
-            labelSpan.className = "wrap-break-word hyphens-auto";
+            labelSpan.className = "tile__label";
             labelSpan.textContent = tile.prompt;
             btn.appendChild(labelSpan);
 
             /* check-mark for marked non-free tiles */
             if (tile.selected && !tile.freeCell) {
                 var tick = document.createElement("span");
-                tick.className = "absolute top-0.5 right-0.5 text-green-600 text-xs";
+                tick.className = "tile__check";
                 tick.textContent = "\u2713";
                 btn.appendChild(tick);
             }
